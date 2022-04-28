@@ -1,11 +1,11 @@
 import datetime
 from collections import namedtuple
 import numbers
-from time_helper import TimeHelper
+from time_helper import return_timezone
 
 
 class Account:
-    """TODO"""
+    """A simple account class with timezones handled by pytz"""
     monthly_int_rate = .5  # percent representation
 
     def __init__(self, acct_num, first, last, tz='Etc/Greenwich', initial_balance=None, transaction_id=None):
@@ -16,11 +16,7 @@ class Account:
         self.last = last
         self.balance = initial_balance
         self.transaction_id = transaction_id if transaction_id else 0
-        self._tz = TimeHelper.return_timezone(tz)
-
-    @property
-    def tz(self):
-        return self._tz
+        self._tz = return_timezone(tz)
 
     @property
     def first(self):
@@ -88,17 +84,13 @@ class Account:
     def deposit_interest(self):
         self._balance += (Account.monthly_int_rate/100)*self._balance
         print(self._balance)
-        return  # TODO: return confirmation num
+        return self.generate_conf_num('D')
 
     def generate_conf_num(self, transaction: str) -> str:
         self.transaction_id += 1
-        # cur_time = datetime.datetime.utcnow().replace(
-        # tzinfo = datetime.timezone.utc).astimezone(pytz.timezone(self._tz))
         cur_time = datetime.datetime.utcnow().replace(
             tzinfo=datetime.timezone.utc).astimezone(self._tz)
         return transaction+'-'+str(self.acct_num)+'-'+datetime.datetime.strftime(cur_time, format='%Y%d%m%H%M%S')+'-'+str(self.transaction_id)
-
-    # USE NAMEDTUPLE TO ACCESS PROPERTIES OF RESULT USING DOT NOTATION!!!!!
 
     def parse_conf_num(self, conf_num: str):
         conf_num_ = conf_num.split("-")
