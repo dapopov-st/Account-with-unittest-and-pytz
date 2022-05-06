@@ -3,3 +3,4 @@ Confirmation numbers are produced after every transaction and user information i
 Unittest is used to test the methods in the Account class. To run the tests, navigate to the current directory at the command line, then type
 python -m unittest test_account.py
 Except for the use of pytz to handle time zones, the code was written to project specifications found in the .ipynb file.  I wrote the tests after studying Fred Baptiste's approach.
+Many thanks to Fred [Baptiste](https://www.udemy.com/user/fredbaptiste/) for problem definition and teaching many of the necessary techniques
